@@ -13,4 +13,5 @@
 /tmp
 config/database.yml
 client/node_modules
+public/*
 *.keep

@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     api (0.0.1)
+      active_model_serializers (~> 0.8.3)
       rails (~> 4.2.6)
 
 GEM
@@ -26,6 +27,8 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.2)
+    active_model_serializers (0.8.3)
+      activemodel (>= 3.0)
     activejob (4.2.6)
       activesupport (= 4.2.6)
       globalid (>= 0.3.0)
@@ -108,6 +111,3 @@ PLATFORMS
 DEPENDENCIES
   api!
   mysql2
-
-BUNDLED WITH
-   1.10.6

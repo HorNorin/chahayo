@@ -19,5 +19,11 @@ module Chahayo
   class Application < Rails::Application
     config.railties_order = [ExtEngine, :main_app, :all]
     config.active_record.raise_in_transactional_callbacks = true
+    config.middleware.use Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: [:get, :post]
+      end
+    end
   end
 end

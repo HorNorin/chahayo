@@ -10,6 +10,9 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bcrypt', '3.1.10'
+gem 'redis', '~> 3.2'
+gem 'friendly_id'
+gem 'rack-cors'
 
 gem ENV['chahayo'], path: ENV['chahayo']
 
@@ -22,4 +25,8 @@ end
 
 group :development do
   gem 'web-console', '~> 2.0'
+end
+
+group :test do
+  gem 'fakeredis'
 end

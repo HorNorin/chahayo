@@ -6,6 +6,8 @@ RSpec.describe User, type: :model do
 
   describe 'attributes' do
     it { is_expected.to respond_to(:uuid) }
+    it { is_expected.to respond_to(:slug) }
+    it { is_expected.to respond_to(:username) }
     it { is_expected.to respond_to(:email) }
     it { is_expected.to respond_to(:password) }
     it { is_expected.to respond_to(:password_digest) }
@@ -35,10 +37,6 @@ RSpec.describe User, type: :model do
       end
 
       describe '#uuid' do
-        context 'not presence' do
-          it_behaves_like 'an invalid attribute', 'uuid', nil, "can\'t be blank"
-        end
-
         context 'not unique' do
           let(:uuid) { '50c08a03-f9b1-4abf-bd41-81938e20222e' }
           before { FactoryGirl.create(:user, uuid: uuid) }
@@ -80,6 +78,44 @@ RSpec.describe User, type: :model do
         context 'not match' do
           before { user.password = 'secret' }
           it_behaves_like 'an invalid attribute', 'password_confirmation', 'not match', "doesn't match Password"
+        end
+      end
+
+      describe '#username' do
+        context 'not present' do
+          it_behaves_like 'an invalid attribute', 'username', nil, "can't be blank"
+        end
+
+        context 'not unique' do
+          let(:name) { 'norin' }
+          before { FactoryGirl.create(:user, username: name) }
+          it_behaves_like 'an invalid attribute', 'username', 'norin', "has already been taken"
+        end
+      end
+    end
+  end
+
+  describe 'callbacks' do
+    context 'before_create' do
+      describe '#generate_uuid' do
+        before do
+          user.uuid = nil
+          user.save
+        end
+        it 'should have generated uuid' do
+          expect(user.uuid).not_to be_nil
+        end
+      end
+    end
+
+    context 'after_create' do
+      describe '#slug' do
+        before do
+          user.slug = nil
+          user.save
+        end
+        it 'should have generated slug' do
+          expect(user.slug).not_to be_nil
         end
       end
     end
