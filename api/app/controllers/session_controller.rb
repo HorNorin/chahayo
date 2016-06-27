@@ -14,7 +14,7 @@ class SessionController < ApplicationController
 
   def destroy
     AuthenticationToken.instance.revoke(token)
-    render json: 'Successfully logout.', status: :moved_permanently
+    render json: 'Successfully logout.'
   end
 
   private

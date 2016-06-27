@@ -1,0 +1,8 @@
+export const UserConstant = {
+  CURRENT_USER: 1,
+  USER_NOT_FOUND: 2,
+  USER_LOGIN_ERROR: 3,
+  USER_LOGIN_SUCCESS: 4,
+  USER_LOGOUT_SUCCESS: 5,
+  USER_LOGOUT_ERROR: 6,
+};;
