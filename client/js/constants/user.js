@@ -5,4 +5,6 @@ export const UserConstant = {
   USER_LOGIN_SUCCESS: 4,
   USER_LOGOUT_SUCCESS: 5,
   USER_LOGOUT_ERROR: 6,
+  REGISTER_SUCCESS: 7,
+  REGISTER_ERROR: 8
 };;

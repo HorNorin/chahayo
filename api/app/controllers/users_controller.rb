@@ -27,6 +27,6 @@ class UsersController < ApplicationController
   end
 
   def render_user_errors
-    render json: @user.errors, status: :unprocessable_entity
+    render json: @user.errors.full_messages, status: :unprocessable_entity
   end
 end

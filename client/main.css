@@ -31,6 +31,7 @@ a, a:visited {
 
 .header a {
   color: #fff;
+  font-size: 12px;
   text-decoration: none;
 }
 
@@ -48,6 +49,12 @@ a, a:visited {
   line-height: 60px;
 }
 
+.logo.center {
+  float: none;
+  margin: 0 auto;
+  text-align: center;
+}
+
 .search {
   float: right;
   width: 100%;
@@ -63,9 +70,10 @@ a, a:visited {
 }
 
 .search label {
-  top: 0;
+  top: 2px;
   left: 7px;
-  font-size: 14px;
+  cursor: text;
+  font-size: 12px;
   position: absolute;
 }
 
@@ -74,7 +82,7 @@ a, a:visited {
   border: none;
   outline: none;
   padding: 5px 7px;
-  font-size: 14px;
+  font-size: 12px;
   border-radius: 3px;
 }
 
@@ -90,23 +98,6 @@ a, a:visited {
   line-height: 60px;
   padding-right: 10px;
   position: relative;
-}
-
-.user .dropdown-switch .arrow {
-  top: 5px;
-  right: 0;
-  content: "";
-  font-weight: 500;
-  display: block;
-  width: 5px;
-  height: 5px;
-  position: absolute;
-  border-top: 2px solid #fff;
-  border-right: 2px solid #fff;
-  transform: rotate(130deg);
-  -ms-transform: rotate(130deg);
-  -moz-transform: rotate(130deg);
-  -webkit-transform: rotate(135deg);
 }
 
 .user-dropdown {
@@ -147,7 +138,7 @@ a, a:visited {
   color: #555;
   display: block;
   padding: 5px 0;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .user-dropdown-item:hover {
@@ -161,7 +152,7 @@ a, a:visited {
 .user-dropdown-item .badge {
   color: green;
   float: right;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .user-dropdown-item:hover .badge {
@@ -177,10 +168,28 @@ a, a:visited {
   border-top: 1px solid #ccc;
 }
 
-.home {
+.home form {
+  margin-top: 15px;
+}
+
+.validation-errors {
+  color: red;
+  width: 310px;
+  padding: 10px;
+  margin: 0 auto;
+  font-size: 12px;
+  margin-top: 15px;
+  list-style: none;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+.validation-errors li {
+  padding: 2px 0;
 }
 
 .form {
+  margin: 0 auto;
   width: 310px;
   overflow: hidden;
   padding: 10px;
@@ -225,4 +234,16 @@ a, a:visited {
   background-color: #1da1f2;
   border: 1px solid #3b88c3;
   background-image: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.05));
+}
+
+.loading {
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  height: 32px;
+  margin-top: -16px;
+  margin-left: -16px;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-image: url('img/loading.gif');
 }

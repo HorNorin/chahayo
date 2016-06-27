@@ -8,7 +8,8 @@ export default class AppComponent extends React.Component {
     this.state = {
       data: {
         isUserDropdownOpen: false
-      }
+      },
+      isLoading: true
     };
     this.onUserChanged = this.onUserChanged.bind(this);
     this.resetChildrenState = this.resetChildrenState.bind(this);
@@ -27,7 +28,7 @@ export default class AppComponent extends React.Component {
     let data = this.state.data;
     data.user = UserStore.getUser();
     data.isLogin = UserStore.isLogin();
-    this.setState({ data: data });
+    this.setState({ data: data, isLoading: false });
   }
 
   resetChildrenState() {
@@ -37,11 +38,15 @@ export default class AppComponent extends React.Component {
   }
 
   render() {
-    return (
-      <div className="main" onClick={ this.resetChildrenState }>
-        <HeaderComponent data={ this.state.data } />
-        { React.cloneElement(this.props.children, { data: this.state.data }) }
-      </div>
-    );
+    if (this.state.isLoading) {
+      return (<div className="loading"></div>);
+    } else {
+      return (
+        <div className="main" onClick={ this.resetChildrenState }>
+          <HeaderComponent data={ this.state.data } />
+          { React.cloneElement(this.props.children, { data: this.state.data }) }
+        </div>
+      );
+    }
   }
 }

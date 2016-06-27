@@ -71,6 +71,27 @@ export default class UserActionClass {
       }
     });
   }
+
+  register(user) {
+    $.ajax({
+      url: Config.REGISTER_URL,
+      type: 'POST',
+      dataType: 'json',
+      data: { user: user },
+      success: function(data) {
+        UserDispatcher.handleViewAction({
+          data: data.user,
+          type: UserConstant.REGISTER_SUCCESS
+        });
+      },
+      error: function(error) {
+        UserDispatcher.handleViewAction({
+          data: error.responseJSON,
+          type: UserConstant.REGISTER_ERROR
+        });
+      }
+    });
+  }
 }
 
 export const UserAction = new UserActionClass();

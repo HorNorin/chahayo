@@ -6,14 +6,25 @@ export default class HeaderComponent extends React.Component {
     super(props);
 
     this.state = {
-      isDropdownOpen: false
+      isDropdownOpen: false,
+      shouldShowLabel: true
     };
 
+    this.focus = this.focus.bind(this);
+    this.toggleFocus = this.toggleFocus.bind(this);
     this.toggleDropdown = this.toggleDropdown.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({ isDropdownOpen: nextProps.isUserDropdownOpen });
+  }
+
+  focus() {
+    this.refs.q.focus();
+  }
+
+  toggleFocus() {
+    this.setState({ shouldShowLabel: !this.state.shouldShowLabel});
   }
 
   toggleDropdown(event) {
@@ -30,24 +41,35 @@ export default class HeaderComponent extends React.Component {
   }
 
   render() {
-    if (!this.props.data.isLogin) return null;
+    if (!this.props.data.isLogin) {
+      return (
+        <header className="header">
+          <div className="header-wrapper">
+            <div className="logo center"><a href="/">Chahayo</a></div>
+          </div>
+        </header>
+      )
+    }
+
+    let label = this.state.shouldShowLabel ?
+      (<label htmlFor="q" ref="label" onClick={ this.focus }>Keyword...</label>) : null;
 
     return (
       <header className="header">
         <div className="header-wrapper">
           <div className="user">
             <a className="dropdown-switch" href="#" onClick={ this.toggleDropdown }>
-              { this.props.data.user.username } <span className="arrow"></span>
+              { this.props.data.user.username }
             </a>
             { this.getDropdownContent() }
           </div>
           <div className="search">
             <div className="search-wrapper">
-              <label htmlFor="q">Keyword...</label>
-              <input type="text" name="q" ref="q" />
+              { label }
+              <input type="text" name="q" ref="q" onFocus={ this.toggleFocus } onBlur={ this.toggleFocus } />
             </div>
           </div>
-          <div className="logo"><a href="#">Chahayo</a></div>
+          <div className="logo"><a href="/">Chahayo</a></div>
         </div>
       </header>
     );
