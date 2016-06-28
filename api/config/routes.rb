@@ -3,4 +3,5 @@ Api::Engine.routes.draw do
   get  'logout' => 'session#destroy'
 
   resource :user, only: [:show, :create, :update]
+  resources :boards, only: :index
 end

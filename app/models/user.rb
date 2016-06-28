@@ -4,6 +4,9 @@ class User < ActiveRecord::Base
 
   extend FriendlyId
 
+  has_many :comments
+  has_many :posts, class_name: 'Topic'
+
   friendly_id :username, use: :slugged
 
   validates :uuid, uniqueness: true

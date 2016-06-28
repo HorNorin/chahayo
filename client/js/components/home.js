@@ -1,17 +1,23 @@
 import { UserStore } from 'stores/user';
 import { UserAction } from 'actions/user';
+import { BoardAction } from 'actions/board';
+import { BoardStore } from 'stores/board';
 
 export default class HomeComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      boards: [],
+      isLoading: true,
       validationErrors: []
     };
 
     this.doLogin = this.doLogin.bind(this);
     this.doRegister = this.doRegister.bind(this);
     this.onUserChanged = this.onUserChanged.bind(this);
+    this.onBoardChanged = this.onBoardChanged.bind(this);
     UserStore.addChangedListener(this.onUserChanged);
+    BoardStore.addChangedListener(this.onBoardChanged);
 
     document.title = 'Chahayo - Let your ideas be known';
   }
@@ -19,11 +25,17 @@ export default class HomeComponent extends React.Component {
   /** Begin lifecycle hooks **/
 
   componentDidMount() {
-    this.refs.txtEmail.focus();
+    if (this.refs.txtEmail) this.refs.txtEmail.focus();
+    BoardAction.getBoards(UserStore.getToken());
   }
 
   componentDidUpdate() {
-    this.refs.txtEmail.focus();
+    if (this.refs.txtEmail) this.refs.txtEmail.focus();
+  }
+
+  componentWillUnmount() {
+    UserStore.removeChangedListener(this.onUserChanged);
+    BoardStore.removeChangedListener(this.onBoardChanged);
   }
 
   /** End lifecycle hooks **/
@@ -65,6 +77,13 @@ export default class HomeComponent extends React.Component {
     });
   }
 
+  onBoardChanged() {
+    this.setState({
+      isLoading: false,
+      boards: BoardStore.getBoards()
+    });
+  }
+
   render() {
     if (this.props.data.isLogin) {
       return this.loginedContent();
@@ -76,9 +95,20 @@ export default class HomeComponent extends React.Component {
   /** Helper methods **/
 
   loginedContent() {
+    console.log(this.state.boards);
+    let boardNodes = this.state.boards.map((board) => {
+      return (
+        <div key={ board.id } className="board">
+          <a href={ `/board/${board.id}` }>{ board.name.capitialize() }</a>
+        </div>
+      );
+    });
+
     return (
       <div className="content home">
-        <h1>Home Page</h1>
+        <div className="board-container">
+          { boardNodes }
+        </div>
       </div>
     );
   }
