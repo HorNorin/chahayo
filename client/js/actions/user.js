@@ -1,6 +1,6 @@
 import { Config } from 'constants/config';
 import { UserConstant } from 'constants/user';
-import { UserDispatcher } from 'dispatchers/user';
+import { AppDispatcher } from 'dispatchers/app';
 
 export default class UserActionClass {
   getCurrentUser(token) {
@@ -12,13 +12,13 @@ export default class UserActionClass {
         'Authorization': ` Token token=${token}`
       },
       success: (data) => {
-        UserDispatcher.handleViewAction({
+        AppDispatcher.handleViewAction({
           data: data.user,
           type: UserConstant.CURRENT_USER
         });
       },
       error: (xhr) => {
-        UserDispatcher.handleViewAction({
+        AppDispatcher.handleViewAction({
           data: xhr.responseText,
           type: UserConstant.USER_NOT_FOUND
         });
@@ -33,13 +33,13 @@ export default class UserActionClass {
       dataType: 'json',
       data: credentials,
       success: (data) => {
-        UserDispatcher.handleViewAction({
+        AppDispatcher.handleViewAction({
           data: data.user,
           type: UserConstant.USER_LOGIN_SUCCESS
         });
       },
       error: (xhr) => {
-        UserDispatcher.handleViewAction({
+        AppDispatcher.handleViewAction({
           data: xhr.responseText,
           type: UserConstant.USER_LOGIN_ERROR
         });
@@ -55,7 +55,7 @@ export default class UserActionClass {
       headers: { 'Authorization': ` Token token=${token}` },
       success: (data) => {
         console.log(data);
-        UserDispatcher.handleViewAction({
+        AppDispatcher.handleViewAction({
           data: data,
           type: UserConstant.USER_LOGOUT_SUCCESS
         });
@@ -64,7 +64,7 @@ export default class UserActionClass {
         let type = xhr.status === 200 ?
           UserConstant.USER_LOGOUT_SUCCESS : UserConstant.USER_LOGOUT_ERROR;
 
-        UserDispatcher.handleViewAction({
+        AppDispatcher.handleViewAction({
           type: type,
           data: xhr.responseText
         });
@@ -79,13 +79,13 @@ export default class UserActionClass {
       dataType: 'json',
       data: { user: user },
       success: function(data) {
-        UserDispatcher.handleViewAction({
+        AppDispatcher.handleViewAction({
           data: data.user,
           type: UserConstant.REGISTER_SUCCESS
         });
       },
       error: function(error) {
-        UserDispatcher.handleViewAction({
+        AppDispatcher.handleViewAction({
           data: error.responseJSON,
           type: UserConstant.REGISTER_ERROR
         });

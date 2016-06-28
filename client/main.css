@@ -27,6 +27,7 @@ a, a:visited {
 .header {
   height: 60px;
   background: #2e51a2;
+  margin-bottom: 15px;
 }
 
 .header a {
@@ -246,4 +247,9 @@ a, a:visited {
   position: absolute;
   background-repeat: no-repeat;
   background-image: url('img/loading.gif');
+}
+
+.content {
+  width: 960px;
+  margin: 0 auto;
 }

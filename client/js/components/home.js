@@ -10,11 +10,23 @@ export default class HomeComponent extends React.Component {
 
     this.doLogin = this.doLogin.bind(this);
     this.doRegister = this.doRegister.bind(this);
-    this.onUserRegistered = this.onUserRegistered.bind(this);
-    UserStore.addChangedListener(this.onUserRegistered);
+    this.onUserChanged = this.onUserChanged.bind(this);
+    UserStore.addChangedListener(this.onUserChanged);
 
     document.title = 'Chahayo - Let your ideas be known';
   }
+
+  /** Begin lifecycle hooks **/
+
+  componentDidMount() {
+    this.refs.txtEmail.focus();
+  }
+
+  componentDidUpdate() {
+    this.refs.txtEmail.focus();
+  }
+
+  /** End lifecycle hooks **/
 
   doLogin(event) {
     event.preventDefault();
@@ -37,11 +49,20 @@ export default class HomeComponent extends React.Component {
     });
   }
 
-  onUserRegistered() {
-    let errors = UserStore.getValidationErrors();
-    if (errors.length > 0) {
-      this.setState({ validationErrors: errors });
+  onUserChanged() {
+    let loginError = UserStore.getLoginError();
+    let validationErrors = UserStore.getValidationErrors();
+
+    if (loginError) this.refs.txtPassword.value = '';
+    if (validationErrors.length > 0) {
+      this.refs.txtUserPassword.value = '';
+      this.refs.txtUserPasswordConfirm.value = '';
     }
+
+    this.setState({
+      loginError: UserStore.getLoginError(),
+      validationErrors: UserStore.getValidationErrors()
+    });
   }
 
   render() {
@@ -52,13 +73,21 @@ export default class HomeComponent extends React.Component {
     }
   }
 
+  /** Helper methods **/
+
   loginedContent() {
-    return (<h1>Home Page</h1>);
+    return (
+      <div className="content home">
+        <h1>Home Page</h1>
+      </div>
+    );
   }
 
   notLoginedContent() {
     return (
       <div className="home">
+        { this.getLoginErrorNode() }
+
         <form className="form" onSubmit={ this.doLogin }>
           <div className="form-group">
             <input type="email" name="email" ref="txtEmail" placeholder="Email" />
@@ -71,7 +100,7 @@ export default class HomeComponent extends React.Component {
           </div>
         </form>
 
-        { this.getErrorMessageNodes() }
+        { this.getValidationErrorNodes() }
 
         <form className="form" onSubmit={ this.doRegister }>
           <div className="form-group">
@@ -94,7 +123,19 @@ export default class HomeComponent extends React.Component {
     );
   }
 
-  getErrorMessageNodes() {
+  getLoginErrorNode() {
+    if (this.state.loginError) {
+      return (
+        <ul className="validation-errors">
+          <li>{ this.state.loginError }</li>
+        </ul>
+      );
+    } else {
+      return null;
+    }
+  }
+
+  getValidationErrorNodes() {
     if (this.state.validationErrors.length > 0) {
       let messageNodes = this.state.validationErrors.map((message, index) => {
         return (<li key={ index }>{ message }</li>);

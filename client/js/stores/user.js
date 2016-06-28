@@ -1,29 +1,33 @@
 import { EventEmitter } from 'events';
 import { UserConstant } from 'constants/user';
-import { UserDispatcher } from 'dispatchers/user';
+import { AppDispatcher } from 'dispatchers/app';
 
 export default class UserStoreClass extends EventEmitter {
   constructor() {
     super();
     this.user = null;
+    this.loginError = '';
     this.validationErrors = [];
 
-    this.dispatchIndex = UserDispatcher.register((payload) => {
+    this.dispatchIndex = AppDispatcher.register((payload) => {
       let action = payload.action;
       switch (action.type) {
         case UserConstant.CURRENT_USER:
         case UserConstant.USER_LOGIN_SUCCESS:
         case UserConstant.REGISTER_SUCCESS:
           this.saveUser(action.data);
+          this.clearErrors();
           break;
-        case UserConstant.USER_NOT_FOUND:
         case UserConstant.USER_LOGIN_ERROR:
+          this.saveUser(null);
+          this.setLoginError('Invalid email or password');
+        case UserConstant.USER_NOT_FOUND:
         case UserConstant.USER_LOGOUT_SUCCESS:
           this.saveUser(null);
           break;
         case UserConstant.REGISTER_ERROR:
           this.saveUser(null);
-          this.saveErrorMessages(action.data);
+          this.setValidationErrors(action.data);
           break;
       }
 
@@ -48,6 +52,10 @@ export default class UserStoreClass extends EventEmitter {
     return localStorage.getItem('token');
   }
 
+  getLoginError() {
+    return this.loginError;
+  }
+
   getValidationErrors() {
     return this.validationErrors;
   }
@@ -63,8 +71,17 @@ export default class UserStoreClass extends EventEmitter {
     this.validationErrors = [];
   }
 
-  saveErrorMessages(messages) {
+  setLoginError(message) {
+    this.loginError = message;
+  }
+
+  setValidationErrors(messages) {
     this.validationErrors = messages.users;
+  }
+
+  clearErrors() {
+    this.loginError = '';
+    this.validationErrors = [];
   }
 
   isLogin() {
